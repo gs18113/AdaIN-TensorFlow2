@@ -15,7 +15,7 @@ def str2bool(v):
         raise argparse.ArgumentTypeError('Boolean value expected.')
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-stype_dir', type=str, default='style_images')
+parser.add_argument('-style_dir', type=str, default='style_images')
 parser.add_argument('-save_dir', type=str, default='saved_models')
 parser.add_argument('-lr', default=0.001, type=float)
 parser.add_argument('-exp_name', type=str, required=True)
