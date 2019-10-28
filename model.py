@@ -2,13 +2,21 @@ import tensorflow as tf
 from tensorflow import keras
 from functions import adain
 
-class Encoder(keras.Model):
-    def __init__(self):
-        super().__init__()
-
-class Decoder(keras.Model):
-    def __init__(self):
-        super().__init__()
+def get_decoder():
+    return keras.Sequential([
+        keras.layers.Conv2d(256, (3, 3), padding='same', activation='relu'),
+        keras.layers.UpSampling2D(),
+        keras.layers.Conv2d(256, (3, 3), padding='same', activation='relu'),
+        keras.layers.Conv2d(256, (3, 3), padding='same', activation='relu'),
+        keras.layers.Conv2d(256, (3, 3), padding='same', activation='relu'),
+        keras.layers.Conv2d(128, (3, 3), padding='same', activation='relu'),
+        keras.layers.UpSampling2D(),
+        keras.layers.Conv2d(128, (3, 3), padding='same', activation='relu'),
+        keras.layers.Conv2d(64, (3, 3), padding='same', activation='relu'),
+        keras.layers.UpSampling2D(),
+        keras.layers.Conv2d(64, (3, 3), padding='same', activation='relu'),
+        keras.layers.Conv2d(3, (3, 3), padding='same', activation='relu'),
+    ])
 
 class Net(keras.Model):
     def __init__(self, encoder, decoder):
@@ -53,7 +61,7 @@ class Net(keras.Model):
 
         return self.decoder(t)
     
-    def get_losses(self, content, style, alpha=1.0)
+    def get_losses(self, content, style, alpha=1.0):
         style_features = self.encode_with_intermediate(style)
         content_feature = self.encode(content)
         t = adain(content_feature, style_features[-1])

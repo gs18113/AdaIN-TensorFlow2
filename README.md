@@ -14,6 +14,12 @@ Includes TFLite conversion for mobile/embedded usage.
 * This code was written for studying, so the code may be hard to understand. I'll try my best to improve code readability.
 
 ## Usage
+### Download style images
+```
+cd STYLE/IMAGE/DIRECTORY/
+wget http://web.fsktm.um.edu.my/~cschan/source/ICIP2017/wikiart.zip
+unzip wikiart.zip
+```
 * TODO
 
 ## TODO
