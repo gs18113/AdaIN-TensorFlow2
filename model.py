@@ -4,18 +4,18 @@ from functions import adain
 
 def get_decoder():
     return keras.Sequential([
-        keras.layers.Conv2d(256, (3, 3), padding='same', activation='relu'),
+        keras.layers.Conv2D(256, (3, 3), padding='same', activation='relu'),
         keras.layers.UpSampling2D(),
-        keras.layers.Conv2d(256, (3, 3), padding='same', activation='relu'),
-        keras.layers.Conv2d(256, (3, 3), padding='same', activation='relu'),
-        keras.layers.Conv2d(256, (3, 3), padding='same', activation='relu'),
-        keras.layers.Conv2d(128, (3, 3), padding='same', activation='relu'),
+        keras.layers.Conv2D(256, (3, 3), padding='same', activation='relu'),
+        keras.layers.Conv2D(256, (3, 3), padding='same', activation='relu'),
+        keras.layers.Conv2D(256, (3, 3), padding='same', activation='relu'),
+        keras.layers.Conv2D(128, (3, 3), padding='same', activation='relu'),
         keras.layers.UpSampling2D(),
-        keras.layers.Conv2d(128, (3, 3), padding='same', activation='relu'),
-        keras.layers.Conv2d(64, (3, 3), padding='same', activation='relu'),
+        keras.layers.Conv2D(128, (3, 3), padding='same', activation='relu'),
+        keras.layers.Conv2D(64, (3, 3), padding='same', activation='relu'),
         keras.layers.UpSampling2D(),
-        keras.layers.Conv2d(64, (3, 3), padding='same', activation='relu'),
-        keras.layers.Conv2d(3, (3, 3), padding='same', activation='relu'),
+        keras.layers.Conv2D(64, (3, 3), padding='same', activation='relu'),
+        keras.layers.Conv2D(3, (3, 3), padding='same', activation='relu'),
     ])
 
 class Net(keras.Model):
