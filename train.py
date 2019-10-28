@@ -22,7 +22,7 @@ def str2bool(v):
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-style_dir', type=str, default='style_images')
-parser.add_argument('-save_dir', type=str, default='saved_models')
+parser.add_argument('-output_dir', type=str, default='outputs')
 parser.add_argument('-lr', default=1e-4, type=float)
 parser.add_argument('-lr_decay', default=5e-5, type=float)
 parser.add_argument('-exp_name', type=str, required=True)
@@ -52,7 +52,7 @@ test_data = get_test_set(args.style_dir).repeat().batch(args.batch_size)
 train_iter = iter(train_data)
 test_iter = iter(test_data)
 
-writer = tf.summary.create_file_writer(join(args.exp_name, 'logs/'))
+writer = tf.summary.create_file_writer(join(args.output_dir, args.exp_name, 'logs/'))
 
 @tf.function
 def train_step(content_images, style_images, step):
@@ -70,7 +70,7 @@ ckpt = None
 manager = None
 if args.save_ckpt:
     ckpt = tf.train.Checkpoint(step=tf.Variable(1), optimizer=optimizer, net=model)
-    manager = tf.train.CheckpointManager(ckpt, join(args.save_dir, args.exp_name, 'ckpts/'), max_to_keep=100)
+    manager = tf.train.CheckpointManager(ckpt, join(args.output_dir, args.exp_name, 'ckpts/'), max_to_keep=100)
 
 # Need to run on sample input to generate graph
 if args.save_tflite:
@@ -92,20 +92,20 @@ with writer.as_default():
                 logging.info('Saving model checkpoint...')
                 ckpt_path = manager.save()
                 logging.info('Saved model checkpoint to %s' % ckpt_path)
-                #weight_file = join(args.save_dir, args.exp_name+'_weights', str(i)+'_weights.h5')
+                #weight_file = join(args.output_dir, args.exp_name+'_weights', str(i)+'_weights.h5')
                 # logging.info('Saving weights to %s' % weight_file)
 
                 # model.save_weights(weight_file, save_format='tf')
 
                 # # optimizer weights
-                # optimizer_file = join(args.save_dir, args.exp_name+'_weights', str(i)+'_optimizer.pkl')
+                # optimizer_file = join(args.output_dir, args.exp_name+'_weights', str(i)+'_optimizer.pkl')
                 # logging.info('Saving optimizer state to %s' % weight_file)
 
                 # weight_values = optimizer.get_weights()
                 # with open(optimizer_file, 'wb') as f:
                 #     pickle.dump(weight_values, f)
             if args.save_tflite:
-                tflite_path = join(args.save_dir, args.exp_name, 'tflite')
+                tflite_path = join(args.output_dir, args.exp_name, 'tflite')
                 if not exists(tflite_path):
                     os.makedirs(tflite_path)
                 tflite_file = join(tflite_path, args.exp_name+'_'+str(i)+'.tflite')
