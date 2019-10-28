@@ -61,18 +61,3 @@ class Net(keras.Model):
         t = alpha * t + (1-alpha) * content_feature
 
         return self.decoder(t)
-    
-    def train_batch(self, content, style, alpha=1.0):
-        style_features = self.encode_with_intermediate(style)
-        content_feature = self.encode(content)
-        t = adain(content_feature, style_features[-1])
-        t = alpha * t + (1-alpha) * content_feature
-
-        g_t = self.decoder(t)
-        g_t_features = self.encode_with_intermediate(g_t)
-
-        loss_c = self.calc_content_loss(g_t_features[-1], t)
-        loss_s = 0
-        for i in range(4):
-            loss_s += self.calc_style_loss(g_t_features[i], style_features[i])
-        return loss_c, loss_s
