@@ -46,8 +46,8 @@ lr_schedule = tf.keras.optimizers.schedules.InverseTimeDecay(
 )
 optimizer = tf.keras.optimizers.Adam(learning_rate=lr_schedule)
 
-train_data = get_training_set(args.style_dir).shuffle(30).batch(args.batch_size).repeat()
-test_data = get_test_set(args.style_dir).batch(args.batch_size).repeat()
+train_data = get_training_set(args.style_dir).repeat().shuffle(30).batch(args.batch_size)
+test_data = get_test_set(args.style_dir).repeat().batch(args.batch_size)
 
 train_iter = iter(train_data)
 test_iter = iter(test_data)
