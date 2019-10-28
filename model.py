@@ -62,7 +62,7 @@ class Net(keras.Model):
 
         return self.decoder(t)
     
-    def get_losses(self, content, style, alpha=1.0):
+    def train_batch(self, content, style, alpha=1.0):
         style_features = self.encode_with_intermediate(style)
         content_feature = self.encode(content)
         t = adain(content_feature, style_features[-1])

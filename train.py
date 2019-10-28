@@ -58,7 +58,7 @@ writer = tf.summary.create_file_writer('logs/')
 def train_step(content_images, style_images, step):
     with writer.as_default():
         with tf.GradientTape() as tape:
-            loss_c, loss_s = model.train(content_images, style_images)
+            loss_c, loss_s = model.train_batch(content_images, style_images)
             loss = loss_c * args.content_weight + loss_s *  args.style_weight
         gradients = tape.gradient(loss, model.trainable_variables)
         optimizer.apply_gradients(zip(gradients, model.trainable_variables))
