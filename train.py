@@ -72,6 +72,11 @@ if args.save_ckpt:
     ckpt = tf.train.Checkpoint(step=tf.Variable(1), optimizer=optimizer, net=model)
     manager = tf.train.CheckpointManager(ckpt, join(args.save_dir, args.exp_name, 'ckpts/'), max_to_keep=100)
 
+# Need to run on sample input to generate graph
+if args.save_tflite:
+    sample_input = tf.random.uniform([1, 256, 256, 3])
+    sample_output = model(sample_input)
+
 logging.info('All ready, starting train steps')
 with writer.as_default():
     for i in tqdm(range(args.max_iter)):
