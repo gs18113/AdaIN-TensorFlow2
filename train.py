@@ -5,6 +5,7 @@ import os
 from os.path import join, exists
 from model import Net, get_decoder
 from data import get_training_set, get_test_set
+import pickle
 
 def str2bool(v):
     if isinstance(v, bool):
@@ -71,3 +72,13 @@ with writer.as_default():
             if not exists(save_path):
                 os.makedirs(save_path)
             tf.saved_model.save(model, save_path)
+            if args.save_model_weights:
+                weight_path = join(join(args.save_dir, args.exp_name+'_weights'), str(i)+'_weights.h5')
+                model.save_weights(weight_path, save_format='tf')
+
+                # optimizer weights
+                optimizer_file = join(join(args.save_dir, args.exp_name+'_weights'), str(i)+'_optimizer.pkl')
+                optimizer_weights = getattr(optimizer, 'weights')
+                weight_values = tf.keras.batch_get_value(optimizer_weights)
+                with open(optimizer_file, 'wb') as f:
+                    pickle.dump(weight_values, f)
