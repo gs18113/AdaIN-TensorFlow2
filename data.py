@@ -6,7 +6,7 @@ def get_image_from_coco(coco):
     image = coco['image']
     image = tf.cast(image, tf.float32)
 
-    image_size = tf.shape(image)
+    image_size = tf.shape(image)[:2]
     min_length = tf.reduce_min(image_size)
     image_size = image_size * 512 // min_length
     image = tf.image.resize(image, image_size)
