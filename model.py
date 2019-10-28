@@ -22,9 +22,9 @@ class Net(keras.Model):
     def __init__(self, encoder, decoder):
         super().__init__()
         self.enc_1 = keras.Sequential(encoder.layers[:2])
-        self.enc_2 = keras.Seqeuntial(encoder.layers[2:5])
+        self.enc_2 = keras.Sequential(encoder.layers[2:5])
         self.enc_3 = keras.Sequential(encoder.layers[5:8])
-        self.enc_4 = keras.Seqeuntial(encoder.layers[8:13])
+        self.enc_4 = keras.Sequential(encoder.layers[8:13])
         self.decoder = decoder
         self.mse = keras.losses.MeanSquaredError()
 
