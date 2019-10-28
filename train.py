@@ -30,7 +30,6 @@ parser.add_argument('-batch_size', type=int , default=8)
 parser.add_argument('-max_iter', type=int, default=160000)
 parser.add_argument('-style_weight', type=float, default=10.0)
 parser.add_argument('-content_weight', type=float, default=1.0)
-parser.add_argument('-save_ckpt', type=str2bool, default=False)
 parser.add_argument('-save_tflite', type=str2bool, default=False)
 parser.add_argument('-save_every', type=int , default=10000)
 args = parser.parse_args()
@@ -66,11 +65,8 @@ def train_step(content_images, style_images, step):
         tf.summary.scalar("loss_s", loss_s, step=i)
 
 # Checkpoints
-ckpt = None
-manager = None
-if args.save_ckpt:
-    ckpt = tf.train.Checkpoint(step=tf.Variable(1), optimizer=optimizer, net=model)
-    manager = tf.train.CheckpointManager(ckpt, join(args.output_dir, args.exp_name, 'ckpts/'), max_to_keep=100)
+ckpt = tf.train.Checkpoint(step=tf.Variable(1), optimizer=optimizer, net=model)
+manager = tf.train.CheckpointManager(ckpt, join(args.output_dir, args.exp_name, 'ckpts/'), max_to_keep=100)
 
 # Need to run on sample input to generate graph
 if args.save_tflite:
@@ -85,25 +81,23 @@ with writer.as_default():
         content_images, style_images = next(train_iter)
         train_step(content_images, style_images, i)
         writer.flush()
-        if args.save_ckpt:
-            ckpt.step.assign_add(1)
+        ckpt.step.assign_add(1)
         if (i+1) % args.save_every == 0 or (i+1) == args.max_iter:
-            if args.save_ckpt:
-                logging.info('Saving model checkpoint...')
-                ckpt_path = manager.save()
-                logging.info('Saved model checkpoint to %s' % ckpt_path)
-                #weight_file = join(args.output_dir, args.exp_name+'_weights', str(i)+'_weights.h5')
-                # logging.info('Saving weights to %s' % weight_file)
+            logging.info('Saving model checkpoint...')
+            ckpt_path = manager.save()
+            logging.info('Saved model checkpoint to %s' % ckpt_path)
+            #weight_file = join(args.output_dir, args.exp_name+'_weights', str(i)+'_weights.h5')
+            # logging.info('Saving weights to %s' % weight_file)
 
-                # model.save_weights(weight_file, save_format='tf')
+            # model.save_weights(weight_file, save_format='tf')
 
-                # # optimizer weights
-                # optimizer_file = join(args.output_dir, args.exp_name+'_weights', str(i)+'_optimizer.pkl')
-                # logging.info('Saving optimizer state to %s' % weight_file)
+            # # optimizer weights
+            # optimizer_file = join(args.output_dir, args.exp_name+'_weights', str(i)+'_optimizer.pkl')
+            # logging.info('Saving optimizer state to %s' % weight_file)
 
-                # weight_values = optimizer.get_weights()
-                # with open(optimizer_file, 'wb') as f:
-                #     pickle.dump(weight_values, f)
+            # weight_values = optimizer.get_weights()
+            # with open(optimizer_file, 'wb') as f:
+            #     pickle.dump(weight_values, f)
             if args.save_tflite:
                 tflite_path = join(args.output_dir, args.exp_name, 'tflite')
                 if not exists(tflite_path):
