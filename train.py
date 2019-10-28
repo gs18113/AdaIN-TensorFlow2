@@ -52,7 +52,7 @@ test_data = get_test_set(args.style_dir).batch(args.batch_size).repeat()
 train_iter = iter(train_data)
 test_iter = iter(test_data)
 
-writer = tf.summary.SummaryWriter('logs/')
+writer = tf.summary.create_file_writer('logs/')
 
 @tf.function
 def train_step(content_images, style_images, step):
