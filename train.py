@@ -113,4 +113,4 @@ with writer.as_default():
                 converter = tf.lite.TFLiteConverter.from_concrete_functions([model.call.get_concrete_function()])
                 tflite_model = converter.convert()
                 open(tflite_file, 'wb').write(tflite_model)
-                logging.info('Saved TFLite model to %s' % tflite_model)
+                logging.info('Saved TFLite model to %s' % tflite_file)
