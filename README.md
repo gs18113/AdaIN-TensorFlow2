@@ -20,9 +20,14 @@ cd STYLE/IMAGE/DIRECTORY/
 wget http://web.fsktm.um.edu.my/~cschan/source/ICIP2017/wikiart.zip
 unzip wikiart.zip
 ```
-* TODO
+### Train
+```
+python3 train.py -exp_name EXP_NAME [-lr LEARNING_RATE] [-batch_size BATCH_SIZE] [-output_dir OUTPUT_DIR] [-save_every SAVE_EVERY] [-save_tflite SAVE_TFLITE]
+```
+Check out the code for more training options.
 
 ## TODO
+* Generate TFLite model from checkpoints
 * Color preserving
 * Style interpolation
 * Different style for different region
