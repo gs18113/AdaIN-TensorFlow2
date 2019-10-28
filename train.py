@@ -74,8 +74,10 @@ if args.save_ckpt:
 
 # Need to run on sample input to generate graph
 if args.save_tflite:
-    sample_input = tf.random.uniform([1, 256, 256, 3])
-    sample_output = model(sample_input)
+    sample_input_0 = tf.random.uniform([1, 256, 256, 3])
+    sample_input_1 = tf.random.uniform([1, 256, 256, 3])
+    sample_input_2 = tf.random.uniform(1)
+    sample_output = model(sample_input_0, sample_input_1, sample_input_2)
 
 logging.info('All ready, starting train steps')
 with writer.as_default():
