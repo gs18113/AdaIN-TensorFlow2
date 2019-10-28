@@ -88,11 +88,6 @@ with writer.as_default():
         if args.save_ckpt:
             ckpt.step.assign_add(1)
         if (i+1) % args.save_every == 0 or (i+1) == args.max_iter:
-            save_path = join(args.save_dir, args.exp_name, str(i)+'_savedmodel')
-            if not exists(save_path):
-                os.makedirs(save_path)
-            logging.info('Saving model to %s...' % save_path)
-            tf.saved_model.save(model, save_path)
             if args.save_ckpt:
                 logging.info('Saving model checkpoint...')
                 ckpt_path = manager.save()
@@ -109,14 +104,13 @@ with writer.as_default():
                 # weight_values = optimizer.get_weights()
                 # with open(optimizer_file, 'wb') as f:
                 #     pickle.dump(weight_values, f)
-
             if args.save_tflite:
                 tflite_path = join(args.save_dir, args.exp_name, 'tflite')
                 if not exists(tflite_path):
                     os.makedirs(tflite_path)
                 tflite_file = join(tflite_path, str(i)+'_model.tflite')
                 logging.info('Saving TFLite model...')
-                converter = tf.lite.TFLiteConverter.from_concrete_functions([model.call.get_concrete_function])
+                converter = tf.lite.TFLiteConverter.from_concrete_functions([model.call.get_concrete_function()])
                 tflite_model = converter.convert()
                 open(tflite_file, 'wb').write(tflite_model)
                 logging.info('Saved TFLite model to %s' % tflite_model)
