@@ -53,6 +53,7 @@ class Net(keras.Model):
         target_mean, target_std = tf.nn.moments(target, axes=[1, 2])
         return self.mse(input_mean, target_mean)+self.mse(input_std, target_std)
 
+    @tf.function
     def call(self, content, style, alpha=1.0):
         style_feature = self.encode(style)
         content_feature = self.encode(content)

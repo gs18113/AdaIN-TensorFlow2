@@ -29,6 +29,7 @@ parser.add_argument('-max_iter', type=int, default=160000)
 parser.add_argument('-style_weight', type=float, default=10.0)
 parser.add_argument('-content_weight', type=float, default=1.0)
 parser.add_argument('-save_model_weights', type=str2bool, default=False)
+parser.add_argument('-save_tflite', type=str2bool, default=False)
 parser.add_argument('-save_every', type=int , default=10000)
 args = parser.parse_args()
 
@@ -73,8 +74,8 @@ with writer.as_default():
                 os.makedirs(save_path)
             tf.saved_model.save(model, save_path)
             if args.save_model_weights:
-                weight_path = join(join(args.save_dir, args.exp_name+'_weights'), str(i)+'_weights.h5')
-                model.save_weights(weight_path, save_format='tf')
+                weight_file = join(join(args.save_dir, args.exp_name+'_weights'), str(i)+'_weights.h5')
+                model.save_weights(weight_file, save_format='tf')
 
                 # optimizer weights
                 optimizer_file = join(join(args.save_dir, args.exp_name+'_weights'), str(i)+'_optimizer.pkl')
@@ -82,3 +83,8 @@ with writer.as_default():
                 weight_values = tf.keras.batch_get_value(optimizer_weights)
                 with open(optimizer_file, 'wb') as f:
                     pickle.dump(weight_values, f)
+            if args.save_tflite:
+                tflite_file = join(join(args.save_dir, args.exp_name+'_tflite'), str(i)+'_model.tflite')
+                converter = tf.lite.TFLiteConverter.from_keras_model(model)
+                tflite_model = converter.convert()
+                open('tflite_file', 'wb').write(tflite_model)
