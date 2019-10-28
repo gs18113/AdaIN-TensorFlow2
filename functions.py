@@ -8,16 +8,20 @@ def adain(content_feature, style_feature):
     style_mean, style_std = tf.nn.moments(style_feature, axes=[1, 2])
 
     content_mean = expand_moments_dim(content_mean)
-    content_mean = tf.broadcast_to(content_mean, tf.shape(content_feature))
+    # TFLite does not support broadcasting; it is allowed for add, mul, sub, div
+    # content_mean = tf.broadcast_to(content_mean, tf.shape(content_feature))
 
     content_std = expand_moments_dim(content_std)
-    content_std = tf.broadcast_to(content_std, tf.shape(content_feature))
+    # TFLite does not support broadcasting; it is allowed for add, mul, sub, div
+    # content_std = tf.broadcast_to(content_std, tf.shape(content_feature))
 
     style_mean = expand_moments_dim(style_mean)
-    style_mean = tf.broadcast_to(style_mean, tf.shape(content_feature))
+    # TFLite does not support broadcasting; it is allowed for add, mul, sub, div
+    # style_mean = tf.broadcast_to(style_mean, tf.shape(content_feature))
 
     style_std = expand_moments_dim(style_std)
-    style_std = tf.broadcast_to(style_std, tf.shape(content_feature))
+    # TFLite does not support broadcasting; it is allowed for add, mul, sub, div
+    # style_std = tf.broadcast_to(style_std, tf.shape(content_feature))
 
-    normalized_content = (content_feature - content_mean) / content_std
-    return normalized_content * style_std + style_mean
+    normalized_content = tf.divide(content_feature - content_mean, content_std)
+    return tf.multiply(normalized_content, style_std) + style_mean
