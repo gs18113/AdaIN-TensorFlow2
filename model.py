@@ -71,7 +71,7 @@ class Net(keras.Model):
         g_t = self.decoder(t)
         g_t_features = self.encode_with_intermediate(g_t)
 
-        loss_c = self.calc_content_loss(g_t_features[:-1], t)
+        loss_c = self.calc_content_loss(g_t_features[-1], t)
         loss_s = 0
         for i in range(4):
             loss_s += self.calc_style_loss(g_t_features[i], style_features[i])
