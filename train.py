@@ -116,7 +116,7 @@ with writer.as_default():
                     os.makedirs(tflite_path)
                 tflite_file = join(tflite_path, str(i)+'_model.tflite')
                 logging.info('Saving TFLite model...')
-                converter = tf.lite.TFLiteConverter.from_keras_model(model)
+                converter = tf.lite.TFLiteConverter.from_concrete_functions([model])
                 tflite_model = converter.convert()
                 open(tflite_file, 'wb').write(tflite_model)
                 logging.info('Saved TFLite model to %s' % tflite_model)
