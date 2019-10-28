@@ -81,6 +81,7 @@ if args.save_tflite:
 
 converter = tf.lite.TFLiteConverter.from_concrete_functions([model.call.get_concrete_function()])
 tflite_model = converter.convert()
+print('converted!!')
 '''
 logging.info('All ready, starting train steps')
 with writer.as_default():
