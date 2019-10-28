@@ -1,5 +1,5 @@
 import tensorflow as tf
-import tensorflow_datsets as tfds
+import tensorflow_datasets as tfds
 from os.path import join
 
 def get_image_from_coco(coco):
