@@ -1,7 +1,7 @@
 import tensorflow as tf
 
 def expand_moments_dim(moment):
-    return tf.reshape(moment, [-1, 1, 1, 3])
+    return tf.reshape(moment, [-1, 1, 1, tf.shape(moment)[-1]])
 
 def adain(content_feature, style_feature):
     content_mean, content_std = tf.nn.moments(content_feature, axes=[1, 2])
