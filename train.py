@@ -108,7 +108,7 @@ with writer.as_default():
                 tflite_path = join(args.save_dir, args.exp_name, 'tflite')
                 if not exists(tflite_path):
                     os.makedirs(tflite_path)
-                tflite_file = join(tflite_path, str(i)+'_model.tflite')
+                tflite_file = join(tflite_path, args.exp_name+'_'+str(i)+'.tflite')
                 logging.info('Saving TFLite model...')
                 converter = tf.lite.TFLiteConverter.from_concrete_functions([model.call.get_concrete_function()])
                 tflite_model = converter.convert()
