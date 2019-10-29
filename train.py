@@ -7,6 +7,7 @@ from model import Net, get_decoder
 from data import get_training_set, get_test_set
 import pickle
 import logging
+import subprocess
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s [INFO] %(message)s')
 
@@ -31,6 +32,8 @@ parser.add_argument('-max_iter', type=int, default=160000)
 parser.add_argument('-style_weight', type=float, default=10.0)
 parser.add_argument('-content_weight', type=float, default=1.0)
 parser.add_argument('-save_tflite', type=str2bool, default=False)
+# Some of the wikiart dataset images may be corrupted
+parser.add_argument('-delete_corrupted', type=str2bool, default=True)
 parser.add_argument('-save_every', type=int , default=10000)
 args = parser.parse_args()
 
@@ -44,6 +47,11 @@ lr_schedule = tf.keras.optimizers.schedules.InverseTimeDecay(
     decay_rate=args.lr_decay
 )
 optimizer = tf.keras.optimizers.Adam(learning_rate=lr_schedule)
+
+if delete_corrupted:
+    for filename in glob.glob(join(args.style_dir, "**/**/*.jpg")):
+        if subprocess.run(['identify', filename]).returncode != 0:
+            os.remove(filename)
 
 train_data = get_training_set(args.style_dir).repeat().shuffle(30).batch(args.batch_size)
 
