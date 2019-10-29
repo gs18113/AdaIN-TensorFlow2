@@ -28,6 +28,7 @@ def get_image_from_wikiart(filename):
     image = tf.image.decode_image(image)
     image_size = tf.shape(image)[:2]
     min_length = tf.reduce_min(image_size)
+    tf.print(image.shape)
     image_size = image_size * 512 // min_length
     image = tf.image.resize(image, image_size)
     image = tf.image.random_crop(image, [256, 256, 3])
