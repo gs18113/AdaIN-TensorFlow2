@@ -62,11 +62,10 @@ class Net(keras.Model):
 
         return self.decoder(t)
     
-    def train_batch(self, content, style, alpha=1.0):
+    def train_batch(self, content, style):
         style_features = self.encode_with_intermediate(style)
         content_feature = self.encode(content)
         t = adain(content_feature, style_features[-1])
-        t = alpha * t + (1-alpha) * content_feature
 
         g_t = self.decoder(t)
         g_t_features = self.encode_with_intermediate(g_t)

@@ -54,15 +54,13 @@ test_iter = iter(test_data)
 writer = tf.summary.create_file_writer(join(args.output_dir, args.exp_name, 'logs/'))
 
 @tf.function
-def train_step(content_images, style_images, step):
-    with writer.as_default():
-        with tf.GradientTape() as tape:
-            loss_c, loss_s = model.train_batch(content_images, style_images)
-            loss = loss_c * args.content_weight + loss_s *  args.style_weight
-        gradients = tape.gradient(loss, model.trainable_variables)
-        optimizer.apply_gradients(zip(gradients, model.trainable_variables))
-        tf.summary.scalar("loss_c", loss_c, step=i)
-        tf.summary.scalar("loss_s", loss_s, step=i)
+def train_step(content_images, style_images):
+    with tf.GradientTape() as tape:
+        loss_c, loss_s = model.train_batch(content_images, style_images)
+        loss = loss_c * args.content_weight + loss_s *  args.style_weight
+    gradients = tape.gradient(loss, model.trainable_variables)
+    optimizer.apply_gradients(zip(gradients, model.trainable_variables))
+    return loss_c, loss_s
 
 # Checkpoints
 ckpt = tf.train.Checkpoint(step=tf.Variable(1), optimizer=optimizer, net=model)
@@ -79,7 +77,9 @@ logging.info('All ready, starting train steps')
 with writer.as_default():
     for i in tqdm(range(args.max_iter)):
         content_images, style_images = next(train_iter)
-        train_step(content_images, style_images, i)
+        loss_c, loss_s = train_step(content_images, style_images)
+        tf.summary.scalar("loss_c", loss_c, step=i)
+        tf.summary.scalar("loss_s", loss_s, step=i)
         writer.flush()
         ckpt.step.assign_add(1)
         if (i+1) % args.save_every == 0 or (i+1) == args.max_iter:
