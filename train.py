@@ -50,10 +50,12 @@ optimizer = tf.keras.optimizers.Adam(learning_rate=lr_schedule)
 
 if args.delete_corrupted:
     logging.info('Checking and deleting corrupted images...')
+    corrupted_count = 0
     for filename in tqdm(glob.glob(join(args.style_dir, "**/**/*.jpg"))):
         if subprocess.run(['identify', filename], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode != 0:
             os.remove(filename)
-    logging.info('Deleted all corrupted images!')
+            corrupted_count += 1
+    logging.info('Deleted all corrupted images! Total corrputed image count: %d' % corrupted_count)
 
 train_data = get_training_set(args.style_dir).repeat().shuffle(30).batch(args.batch_size)
 
