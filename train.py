@@ -1,7 +1,7 @@
 import argparse
 import tensorflow as tf
 from tqdm import tqdm
-import os
+import os, glob
 from os.path import join, exists
 from model import Net, get_decoder
 from data import get_training_set, get_test_set
@@ -48,10 +48,12 @@ lr_schedule = tf.keras.optimizers.schedules.InverseTimeDecay(
 )
 optimizer = tf.keras.optimizers.Adam(learning_rate=lr_schedule)
 
-if delete_corrupted:
+if args.delete_corrupted:
+    logging.info('Deleting corrupted images...')
     for filename in glob.glob(join(args.style_dir, "**/**/*.jpg")):
         if subprocess.run(['identify', filename]).returncode != 0:
             os.remove(filename)
+    logging.info('Deleted all corrupted images!')
 
 train_data = get_training_set(args.style_dir).repeat().shuffle(30).batch(args.batch_size)
 
