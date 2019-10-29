@@ -45,6 +45,7 @@ class Net(keras.Model):
         return results[1:]
 
     def calc_content_loss(self, input, target):
+        assert tf.shape(input) == tf.shape(target)
         return self.mse(input, target)
 
     # Calculate style loss of input & target(after going through VGG-19 layers)
