@@ -16,12 +16,12 @@ def get_image_from_coco(coco):
 def get_coco_training_set():
     split = tfds.Split.TRAIN
     coco = tfds.load(name='coco/2017', split=split)
-    return coco.map(get_image_from_coco)
+    return coco.map(get_image_from_coco, num_parallel_calls=tf.data.experimental.AUTOTUNE)
 
 def get_coco_test_set():
     split = tfds.Split.TEST
     coco = tfds.load(name='coco/2017', split=split)
-    return coco.map(get_image_from_coco)
+    return coco.map(get_image_from_coco, num_parallel_calls=tf.data.experimental.AUTOTUNE)
 
 def get_image_from_wikiart(filename):
     image = tf.io.read_file(filename)
@@ -38,7 +38,7 @@ def get_image_from_wikiart(filename):
 
 def get_wikiart_set(file_dir):
     names = tf.data.Dataset.list_files(join(file_dir, "**/**/*.jpg"))
-    images = names.map(get_image_from_wikiart)
+    images = names.map(get_image_from_wikiart, num_parallel_calls=tf.data.experimental.AUTOTUNE)
     return images
 
 def get_training_set(style_dir):
