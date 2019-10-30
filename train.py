@@ -77,7 +77,7 @@ logging.info('All ready, starting train steps')
 with writer.as_default():
     for i in tqdm(range(args.max_iter)):
         content_images, style_images = next(train_iter)
-        loss_c, loss_s = train_step(content_images, style_images)
+        '''loss_c, loss_s = train_step(content_images, style_images)
         tf.summary.scalar("loss_c", loss_c, step=i)
         tf.summary.scalar("loss_s", loss_s, step=i)
         writer.flush()
@@ -108,3 +108,4 @@ with writer.as_default():
                 tflite_model = converter.convert()
                 open(tflite_file, 'wb').write(tflite_model)
                 logging.info('Saved TFLite model to %s' % tflite_file)
+                '''
