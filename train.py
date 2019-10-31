@@ -22,7 +22,7 @@ def str2bool(v):
 parser = argparse.ArgumentParser()
 parser.add_argument('-style_dir', type=str, default='style_images')
 parser.add_argument('-output_dir', type=str, default='outputs')
-parser.add_argument('-lr', default=1e-5, type=float)
+parser.add_argument('-lr', default=1e-4, type=float)
 parser.add_argument('-lr_decay', default=5e-5, type=float)
 parser.add_argument('-exp_name', type=str, required=True)
 parser.add_argument('-batch_size', type=int , default=8)
@@ -86,6 +86,7 @@ with writer.as_default():
         tf.summary.scalar("loss_s", loss_s, step=i)
         writer.flush()
         ckpt.step.assign_add(1)
+        exit(0)
         if (i+1) % args.save_every == 0 or (i+1) == args.max_iter:
             logging.info('Saving model checkpoint...')
             ckpt_path = manager.save()
