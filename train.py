@@ -31,6 +31,7 @@ parser.add_argument('-style_weight', type=float, default=10.0)
 parser.add_argument('-content_weight', type=float, default=1.0)
 parser.add_argument('-save_tflite', type=str2bool, default=False)
 parser.add_argument('-save_every', type=int , default=10000)
+parser.add_argument('-image_every', type=int , default=100)
 args = parser.parse_args()
 
 encoder = tf.keras.applications.VGG19(include_top=False)
@@ -86,6 +87,13 @@ with writer.as_default():
         tf.summary.scalar("loss_s", loss_s, step=i)
         writer.flush()
         ckpt.step.assign_add(1)
+        if (i+1) % args.image_every == 0:
+            logging.info('Writing example images...')
+            content_images, style_images = next(train_iter)
+            tf.summary.image("content", content_images)
+            tf.summary.image("style", style_images)
+            tf.summary.image("output", model(content_images, style_images, tf.ones(())))
+            logging.info('Writing complete!')
         if (i+1) % args.save_every == 0 or (i+1) == args.max_iter:
             logging.info('Saving model checkpoint...')
             ckpt_path = manager.save()
@@ -108,7 +116,9 @@ with writer.as_default():
                     os.makedirs(tflite_path)
                 tflite_file = join(tflite_path, args.exp_name+'_'+str(i)+'.tflite')
                 logging.info('Saving TFLite model...')
-                converter = tf.lite.TFLiteConverter.from_concrete_functions([model.call.get_concrete_function()])
+                tf_fn = tf.function(model.call, input_signature=(tf.TensorSpec(shape=(
+                    None, 256, 256, 3)), tf.TensorSpec(shape=(None, 256, 256, 3)), tf.TensorSpec(shape=())))
+                converter = tf.lite.TFLiteConverter.from_concrete_functions([tf_fn.get_concrete_function()])
                 tflite_model = converter.convert()
                 open(tflite_file, 'wb').write(tflite_model)
                 logging.info('Saved TFLite model to %s' % tflite_file)
