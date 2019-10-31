@@ -25,7 +25,7 @@ def get_coco_test_set():
 
 def get_image_from_wikiart(filename):
     image = tf.io.read_file(filename)
-    image = tf.image.decode_jpeg(image, channels=3, try_recover_truncated=True)
+    image = tf.image.decode_jpeg(image, channels=3)
     image_size = tf.shape(image)[:2]
     min_length = tf.reduce_min(image_size)
     image_size = image_size * 512 // min_length
