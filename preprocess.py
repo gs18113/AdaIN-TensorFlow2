@@ -32,7 +32,7 @@ count = 0
 with tf.io.TFRecordWriter(record_file) as writer:
     with Pool(8) as pool:
         logging.info('Generated pool')
-        for image in pool.imap(get_img, tqdm(asdf, glob.glob(style_path))):
+        for image in pool.imap(get_img, tqdm(glob.glob(style_path))):
             if image != None:
                 writer.write(image)
                 count += 1
