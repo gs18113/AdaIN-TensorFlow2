@@ -31,7 +31,7 @@ parser.add_argument('-style_weight', type=float, default=10.0)
 parser.add_argument('-content_weight', type=float, default=1.0)
 parser.add_argument('-save_tflite', type=str2bool, default=False)
 parser.add_argument('-save_every', type=int , default=10000)
-parser.add_argument('-image_every', type=int , default=100)
+parser.add_argument('-image_every', type=int , default=500)
 args = parser.parse_args()
 
 tf.random.set_seed(123)
