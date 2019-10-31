@@ -48,6 +48,7 @@ class Net(keras.Model):
         tf.assert_equal(tf.shape(input), tf.shape(target))
         tf.print(input)
         tf.print(target)
+        tf.print(self.mse(input, target))
         return self.mse(input, target)
 
     # Calculate style loss of input & target(after going through VGG-19 layers)
