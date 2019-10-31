@@ -4,18 +4,18 @@ from functions import adain
 
 def get_decoder():
     return keras.Sequential([
-        keras.layers.Conv2D(256, (3, 3), padding='same', activation='relu'),
+        keras.layers.Conv2D(256, (3, 3), padding='same', activation='relu', kernel_initializer='orthogonal'),
         keras.layers.UpSampling2D(),
-        keras.layers.Conv2D(256, (3, 3), padding='same', activation='relu'),
-        keras.layers.Conv2D(256, (3, 3), padding='same', activation='relu'),
-        keras.layers.Conv2D(256, (3, 3), padding='same', activation='relu'),
-        keras.layers.Conv2D(128, (3, 3), padding='same', activation='relu'),
+        keras.layers.Conv2D(256, (3, 3), padding='same', activation='relu', kernel_initializer='orthogonal'),
+        keras.layers.Conv2D(256, (3, 3), padding='same', activation='relu', kernel_initializer='orthogonal'),
+        keras.layers.Conv2D(256, (3, 3), padding='same', activation='relu', kernel_initializer='orthogonal'),
+        keras.layers.Conv2D(128, (3, 3), padding='same', activation='relu', kernel_initializer='orthogonal'),
         keras.layers.UpSampling2D(),
-        keras.layers.Conv2D(128, (3, 3), padding='same', activation='relu'),
-        keras.layers.Conv2D(64, (3, 3), padding='same', activation='relu'),
+        keras.layers.Conv2D(128, (3, 3), padding='same', activation='relu', kernel_initializer='orthogonal'),
+        keras.layers.Conv2D(64, (3, 3), padding='same', activation='relu', kernel_initializer='orthogonal'),
         keras.layers.UpSampling2D(),
-        keras.layers.Conv2D(64, (3, 3), padding='same', activation='relu'),
-        keras.layers.Conv2D(3, (3, 3), padding='same', activation='relu'),
+        keras.layers.Conv2D(64, (3, 3), padding='same', activation='relu', kernel_initializer='orthogonal'),
+        keras.layers.Conv2D(3, (3, 3), padding='same', activation='relu', kernel_initializer='orthogonal'),
     ])
 
 class Net(keras.Model):
@@ -46,7 +46,6 @@ class Net(keras.Model):
 
     def calc_content_loss(self, input, target):
         tf.assert_equal(tf.shape(input), tf.shape(target))
-        tf.print(self.mse(input, target))
         return self.mse(input, target)
 
     # Calculate style loss of input & target(after going through VGG-19 layers)
