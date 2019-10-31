@@ -23,7 +23,7 @@ def adain(content_feature, style_feature):
     # TFLite does not support broadcasting; it is allowed for add, mul, sub, div
     # style_std = tf.broadcast_to(style_std, tf.shape(content_feature))
 
-    print(content_std)
+    tf.print(content_std)
 
     normalized_content = tf.divide(content_feature - content_mean, content_std)
     return tf.multiply(normalized_content, style_std) + style_mean
