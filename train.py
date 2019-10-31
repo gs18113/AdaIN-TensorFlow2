@@ -5,11 +5,7 @@ import os, glob
 from os.path import join, exists
 from model import Net, get_decoder
 from data import get_training_set, get_test_set
-# for downloading
-from data import get_coco_training_set
-import pickle
 import logging
-import subprocess
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s [INFO] %(message)s')
 
