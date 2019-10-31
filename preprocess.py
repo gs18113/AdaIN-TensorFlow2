@@ -36,6 +36,7 @@ with tf.io.TFRecordWriter(record_file) as writer:
         for image in pool.imap(get_img, glob.glob(style_path)):
             if image:
                 writer.write(image)
+                logging.info('asdf')
                 count += 1
 
 print('Total iamge count: %d' % count)
