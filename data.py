@@ -16,9 +16,7 @@ def get_image_from_coco(coco):
 def get_coco_training_set():
     split = tfds.Split.TRAIN
     coco = tfds.load(name='coco/2017', split=split)
-    #return coco.map(get_image_from_coco, num_parallel_calls=tf.data.experimental.AUTOTUNE)
-    return coco
-    #return coco.map(get_image_from_coco)
+    return coco.map(get_image_from_coco, num_parallel_calls=tf.data.experimental.AUTOTUNE)
 
 def get_coco_test_set():
     split = tfds.Split.TEST

@@ -48,10 +48,7 @@ lr_schedule = tf.keras.optimizers.schedules.InverseTimeDecay(
 )
 optimizer = tf.keras.optimizers.Adam(learning_rate=lr_schedule)
 
-# for downloading
-coco_test= get_coco_training_set()
-
-train_data = get_training_set(args.style_dir).repeat().shuffle(30).batch(args.batch_size)#.prefetch(buffer_size=tf.data.experimental.AUTOTUNE)
+train_data = get_training_set(args.style_dir).repeat().shuffle(30).batch(args.batch_size).prefetch(buffer_size=tf.data.experimental.AUTOTUNE)
 
 train_iter = iter(train_data)
 
