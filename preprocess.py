@@ -22,7 +22,8 @@ def get_img(filename):
         image_size = image_size * 512 // min_length
         image = tf.image.resize(image, image_size)
         image = tf.image.random_crop(image, [256, 256, 3])
-        return tf.io.serialize_tensor(image)
+        image = tf.io.serialize_tensor(image)
+        image = tf.train.Feature(bytes_list=image)
     except:
         return None
 
@@ -32,7 +33,7 @@ count = 0
 with tf.io.TFRecordWriter(record_file) as writer:
     with Pool(8) as pool:
         logging.info('Generated pool')
-        for image in tqdm(pool.imap(get_img, glob.glob(style_path))):
+        for image in pool.imap(get_img, glob.glob(style_path)):
             if image:
                 writer.write(image)
                 count += 1
