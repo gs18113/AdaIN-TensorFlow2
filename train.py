@@ -34,6 +34,8 @@ parser.add_argument('-save_every', type=int , default=10000)
 parser.add_argument('-image_every', type=int , default=100)
 args = parser.parse_args()
 
+tf.random.set_seed(123)
+
 encoder = tf.keras.applications.VGG19(include_top=False)
 decoder = get_decoder()
 model = Net(encoder, decoder)
