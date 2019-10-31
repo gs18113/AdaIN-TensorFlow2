@@ -4,6 +4,9 @@ from os.path import join
 from multiprocessing import Pool
 import argparse
 from tqdm import tqdm
+import logging
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s [INFO] %(message)s')
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-style_dir', type=str, default='style_images')
@@ -28,7 +31,8 @@ style_path = join(args.style_dir, '**/**/*.jpg')
 count = 0
 with tf.io.TFRecordWriter(record_file) as writer:
     with Pool(8) as pool:
-        for image in pool.imap(tqdm(glob.glob(style_path))):
+        logging.info('Generated pool')
+        for image in pool.imap(glob.glob(style_path)):
             if image != None:
                 writer.write(image)
                 count += 1
