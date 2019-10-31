@@ -10,7 +10,7 @@ def get_image_from_coco(coco):
     min_length = tf.reduce_min(image_size)
     image_size = image_size * 512 // min_length
     image = tf.image.resize(image, image_size)
-    image = tf.image.random_crop(image, [256, 256, 3])
+    image = tf.image.random_crop(image, [256, 256, 3]) / 255.0
     return image
 
 def get_coco_training_set():
@@ -30,7 +30,7 @@ def get_image_from_wikiart(filename):
     min_length = tf.reduce_min(image_size)
     image_size = image_size * 512 // min_length
     image = tf.image.resize(image, image_size)
-    image = tf.image.random_crop(image, [256, 256, 3])
+    image = tf.image.random_crop(image, [256, 256, 3]) / 255.0
     return image
 
 def get_wikiart_set(file_dir):
