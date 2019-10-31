@@ -90,10 +90,10 @@ with writer.as_default():
         if (i+1) % args.image_every == 0:
             logging.info('Writing example images...')
             content_images, style_images = next(train_iter)
-            tf.summary.image("content", content_images)
-            tf.summary.image("style", style_images)
-            tf.summary.image("output", model(content_images, style_images, tf.ones(())))
-            logging.info('Writing complete!')
+            tf.summary.image("content", content_images, step=i)
+            tf.summary.image("style", style_images, step=i)
+            tf.summary.image("output", model(content_images, style_images, tf.ones(())), step=i)
+            logging.info('Writing complete')
         if (i+1) % args.save_every == 0 or (i+1) == args.max_iter:
             logging.info('Saving model checkpoint...')
             ckpt_path = manager.save()
