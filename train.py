@@ -51,7 +51,10 @@ train_data = get_training_set(args.style_dir).repeat().shuffle(30).batch(args.ba
 
 train_iter = iter(train_data)
 
-writer = tf.summary.create_file_writer(join(args.output_dir, args.exp_name, 'logs/'))
+writer_path = join(args.output_dir, args.exp_name, 'logs/')
+if not exists(writer_path):
+    os.makedirs(writer_path)
+writer = tf.summary.create_file_writer(writer_path)
 
 @tf.function
 def train_step(content_images, style_images):
@@ -64,7 +67,11 @@ def train_step(content_images, style_images):
 
 # Checkpoints
 ckpt = tf.train.Checkpoint(step=tf.Variable(1), optimizer=optimizer, net=model)
-manager = tf.train.CheckpointManager(ckpt, join(args.output_dir, args.exp_name, 'ckpts/'), max_to_keep=100)
+
+ckpt_dir = join(args.output_dir, args.exp_name, 'ckpts/')
+if not exists(ckpt_dir):
+    os.makedirs(ckpt_dir)
+manager = tf.train.CheckpointManager(ckpt, ckpt_dir, max_to_keep=100)
 
 # Need to run on sample input to generate graph
 if args.save_tflite:
