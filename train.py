@@ -5,6 +5,8 @@ import os, glob
 from os.path import join, exists
 from model import Net, get_decoder
 from data import get_training_set, get_test_set
+# for downloading
+from data import get_coco_training_set
 import pickle
 import logging
 import subprocess
@@ -46,6 +48,8 @@ lr_schedule = tf.keras.optimizers.schedules.InverseTimeDecay(
 )
 optimizer = tf.keras.optimizers.Adam(learning_rate=lr_schedule)
 
+# for downloading
+coco_test= get_coco_training_set()
 
 train_data = get_training_set(args.style_dir).repeat().shuffle(30).batch(args.batch_size)#.prefetch(buffer_size=tf.data.experimental.AUTOTUNE)
 
