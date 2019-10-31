@@ -24,6 +24,10 @@ def adain(content_feature, style_feature):
     # TFLite does not support broadcasting; it is allowed for add, mul, sub, div
     # style_std = tf.broadcast_to(style_std, tf.shape(content_feature))
     tf.print(style_mean.shape)
+    tf.print(tf.reduce_sum(tf.cast(tf.math.is_nan(content_mean), tf.int32)))
+    tf.print(tf.reduce_sum(tf.cast(tf.math.is_nan(content_std), tf.int32)))
+    tf.print(tf.reduce_sum(tf.cast(tf.math.is_nan(style_mean), tf.int32)))
+    tf.print(tf.reduce_sum(tf.cast(tf.math.is_nan(style_std), tf.int32)))
 
     normalized_content = tf.divide(content_feature - content_mean, content_std)
     return tf.multiply(normalized_content, style_std) + style_mean
