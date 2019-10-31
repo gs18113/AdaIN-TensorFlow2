@@ -35,7 +35,7 @@ def get_image_from_wikiart(filename):
 
 def get_wikiart_set(file_dir):
     names = tf.data.Dataset.list_files(join(file_dir, "**/**/*.jpg"))
-    images = names.map(get_image_from_wikiart, num_parallel_calls=tf.data.experimental.AUTOTUNE).apply(tf.data.experimental.ignore_errors)
+    images = names.map(get_image_from_wikiart, num_parallel_calls=tf.data.experimental.AUTOTUNE).apply(tf.data.experimental.ignore_errors())
     return images
 
 def get_training_set(style_dir):
