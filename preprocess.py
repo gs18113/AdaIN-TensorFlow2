@@ -7,7 +7,7 @@ from tqdm import tqdm
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-style_dir', type=str, default='style_images')
-parser.add_argument('-output_file', type=str, default='processed_images/processed.tfrecords')
+parser.add_argument('-output_dir', type=str, default='processed_images')
 args = parser.parse_args()
 
 def asdf(filename):
@@ -23,7 +23,7 @@ def asdf(filename):
     except:
         return None
 
-record_file = join(args.output_file, 'processed.tfrecords')
+record_file = join(args.output_dir, 'processed.tfrecords')
 style_path = join(args.style_dir, '**/**/*.jpg')
 count = 0
 with tf.io.TFRecordWriter(record_file) as writer:
