@@ -23,7 +23,7 @@ def asdf(filename):
     except:
         return None
 
-record_file = join(args.output_dir, 'processed.tfrecords')
+record_file = join(args.output_file, 'processed.tfrecords')
 style_path = join(args.style_dir, '**/**/*.jpg')
 count = 0
 with tf.io.TFRecordWriter(record_file) as writer:
