@@ -14,18 +14,18 @@ parser.add_argument('-output_dir', type=str, default='processed_images')
 args = parser.parse_args()
 
 def get_img(filename):
-    try:
-        image = tf.io.read_file(filename)
-        image = tf.image.decode_jpeg(image, channels=3)
-        image_size = tf.shape(image)[:2]
-        min_length = tf.reduce_min(image_size)
-        image_size = image_size * 512 // min_length
-        image = tf.image.resize(image, image_size)
-        image = tf.image.random_crop(image, [256, 256, 3])
-        image = tf.io.serialize_tensor(image)
-        image = tf.train.Feature(bytes_list=image)
-    except:
-        return None
+    #try:
+    image = tf.io.read_file(filename)
+    image = tf.image.decode_jpeg(image, channels=3)
+    image_size = tf.shape(image)[:2]
+    min_length = tf.reduce_min(image_size)
+    image_size = image_size * 512 // min_length
+    image = tf.image.resize(image, image_size)
+    image = tf.image.random_crop(image, [256, 256, 3])
+    image = tf.io.serialize_tensor(image)
+    image = tf.train.Feature(bytes_list=image)
+    #except:
+    #    return None
 
 record_file = join(args.output_dir, 'processed.tfrecords')
 style_path = join(args.style_dir, '**/**/*.jpg')
