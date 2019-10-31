@@ -46,8 +46,8 @@ class Net(keras.Model):
 
     def calc_content_loss(self, input, target):
         tf.assert_equal(tf.shape(input), tf.shape(target))
-        tf.print(tf.reduce_sum(tf.cast(tf.math.is_nan(input)tf.int32)))
-        tf.print(tf.reduce_sum(tf.cat(tf.math.is_nan(target), tf.int32)))
+        tf.print(tf.reduce_sum(tf.cast(tf.math.is_nan(input), tf.int32)))
+        tf.print(tf.reduce_sum(tf.cast(tf.math.is_nan(target), tf.int32)))
         #tf.print(input)
         #tf.print(target)
         #tf.print(self.mse(input, target))
