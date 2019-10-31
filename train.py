@@ -22,7 +22,7 @@ def str2bool(v):
 parser = argparse.ArgumentParser()
 parser.add_argument('-style_dir', type=str, default='style_images')
 parser.add_argument('-output_dir', type=str, default='outputs')
-parser.add_argument('-lr', default=1e-4, type=float)
+parser.add_argument('-lr', default=1e-5, type=float)
 parser.add_argument('-lr_decay', default=5e-5, type=float)
 parser.add_argument('-exp_name', type=str, required=True)
 parser.add_argument('-batch_size', type=int , default=8)
