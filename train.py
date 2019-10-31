@@ -22,7 +22,7 @@ def str2bool(v):
         raise argparse.ArgumentTypeError('Boolean value expected.')
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-style_dir', type=str, default='style_images')
+parser.add_argument('-style_file', type=str, default='processed_images/preprocessed.tfrecords')
 parser.add_argument('-output_dir', type=str, default='outputs')
 parser.add_argument('-lr', default=1e-4, type=float)
 parser.add_argument('-lr_decay', default=5e-5, type=float)

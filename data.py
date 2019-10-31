@@ -38,12 +38,18 @@ def get_wikiart_set(file_dir):
     images = names.map(get_image_from_wikiart, num_parallel_calls=tf.data.experimental.AUTOTUNE)
     return images
 
-def get_training_set(style_dir):
+def get_wikiart_set_preprocessed(filename):
+    images = tf.data.TFRecordDataset(filename)
+    return images.map(lambda x : tf.io.parse_tensor(x), num_parallel_calls=tf.data.experimental.AUTOTUNE)
+
+def get_training_set(style_file):
     coco_train = get_coco_training_set()
-    wikiart_train = get_wikiart_set(style_dir)
+    #wikiart_train = get_wikiart_set(style_dir)
+    wikiart_train = get_wikiart_set_preprocessed(style_file)
     return tf.data.Dataset.zip((coco_train, wikiart_train))
 
-def get_test_set(style_dir):
+def get_test_set(style_file):
     coco_train = get_coco_test_set()
-    wikiart_train = get_wikiart_set(style_dir)
+    #wikiart_train = get_wikiart_set(style_dir)
+    wikiart_train = get_wikiart_set_preprocessed(style_file)
     return tf.data.Dataset.zip((coco_train, wikiart_train))
