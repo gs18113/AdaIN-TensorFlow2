@@ -30,4 +30,5 @@ def adain(content_feature, style_feature):
     tf.print(tf.reduce_sum(tf.cast(tf.math.is_nan(style_std), tf.int32)))
 
     normalized_content = tf.divide(content_feature - content_mean, content_std)
+    tf.print(tf.reduce_sum(tf.cast(tf.math.is_nan(normalized_content), tf.int32)))
     return tf.multiply(normalized_content, style_std) + style_mean
