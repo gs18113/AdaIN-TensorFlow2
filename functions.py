@@ -6,7 +6,6 @@ def expand_moments_dim(moment):
 def adain(content_feature, style_feature):
     content_mean, content_std = tf.nn.moments(content_feature, axes=[1, 2])
     style_mean, style_std = tf.nn.moments(style_feature, axes=[1, 2])
-    tf.print(style_mean.shape)
 
     content_mean = expand_moments_dim(content_mean)
     # TFLite does not support broadcasting; it is allowed for add, mul, sub, div
@@ -23,13 +22,8 @@ def adain(content_feature, style_feature):
     style_std = expand_moments_dim(style_std)
     # TFLite does not support broadcasting; it is allowed for add, mul, sub, div
     # style_std = tf.broadcast_to(style_std, tf.shape(content_feature))
-    tf.print(style_mean.shape)
-    tf.print(tf.reduce_sum(tf.cast(tf.math.is_nan(content_mean), tf.int32)))
-    tf.print(tf.reduce_sum(tf.cast(tf.math.is_nan(content_std), tf.int32)))
-    tf.print(tf.reduce_sum(tf.cast(tf.math.is_nan(style_mean), tf.int32)))
-    tf.print(tf.reduce_sum(tf.cast(tf.math.is_nan(style_std), tf.int32)))
+
+    print(content_std)
 
     normalized_content = tf.divide(content_feature - content_mean, content_std)
-    print(normalized_content.dtype)
-    tf.print(tf.reduce_sum(tf.cast(tf.math.is_nan(normalized_content), tf.int32)))
     return tf.multiply(normalized_content, style_std) + style_mean
