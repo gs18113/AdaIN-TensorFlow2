@@ -45,7 +45,7 @@ lr_schedule = tf.keras.optimizers.schedules.InverseTimeDecay(
     decay_steps=1,
     decay_rate=args.lr_decay
 )
-optimizer = tf.keras.optimizers.Adam(learning_rate=lr_schedule, clipvalue=1.0)
+optimizer = tf.keras.optimizers.Adam(learning_rate=lr_schedule, clipvalue=0.5)
 
 train_data = get_training_set(args.style_dir).repeat().shuffle(30).batch(args.batch_size).prefetch(buffer_size=tf.data.experimental.AUTOTUNE)
 
