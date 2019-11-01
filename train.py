@@ -85,8 +85,6 @@ with writer.as_default():
     for i in tqdm(range(args.max_iter)):
         content_images, style_images = next(train_iter)
         loss_c, loss_s = train_step(content_images, style_images)
-        print(model.trainable_variables)
-        exit(0)
         tf.summary.scalar("loss_c", loss_c, step=i)
         tf.summary.scalar("loss_s", loss_s, step=i)
         writer.flush()

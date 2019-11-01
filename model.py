@@ -71,6 +71,7 @@ class Net(keras.Model):
         t = adain(content_feature, style_features[-1])
 
         g_t = self.decoder(t)
+        tf.print(g_t)
         g_t_features = self.encode_with_intermediate(g_t)
 
         loss_c = self.calc_content_loss(g_t_features[-1], t)
