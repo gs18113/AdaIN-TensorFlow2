@@ -39,7 +39,6 @@ tf.random.set_seed(123)
 encoder = tf.keras.applications.VGG19(include_top=False)
 decoder = get_decoder()
 model = Net(encoder, decoder)
-print(model.trainable_variables)
 
 lr_schedule = tf.keras.optimizers.schedules.InverseTimeDecay(
     args.lr,
@@ -86,6 +85,8 @@ with writer.as_default():
     for i in tqdm(range(args.max_iter)):
         content_images, style_images = next(train_iter)
         loss_c, loss_s = train_step(content_images, style_images)
+        print(model.trainable_variables)
+        exit(0)
         tf.summary.scalar("loss_c", loss_c, step=i)
         tf.summary.scalar("loss_s", loss_s, step=i)
         writer.flush()
