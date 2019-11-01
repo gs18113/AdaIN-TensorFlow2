@@ -50,6 +50,7 @@ class Net(keras.Model):
 
     # Calculate style loss of input & target(after going through VGG-19 layers)
     def calc_style_loss(self, input, target):
+        tf.assert_equal(tf.shape(input), tf.shape(target))
         input_mean, input_std = tf.nn.moments(input, axes=[1, 2])
         target_mean, target_std = tf.nn.moments(target, axes=[1, 2])
         return self.mse(input_mean, target_mean)+self.mse(input_std, target_std)
