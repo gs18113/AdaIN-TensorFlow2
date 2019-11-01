@@ -53,6 +53,8 @@ class Net(keras.Model):
         tf.assert_equal(tf.shape(input), tf.shape(target))
         input_mean, input_std = tf.nn.moments(input, axes=[1, 2])
         target_mean, target_std = tf.nn.moments(target, axes=[1, 2])
+        tf.print(target_mean)
+        tf.print(target_mean.shape)
         return self.mse(input_mean, target_mean)+self.mse(input_std, target_std)
 
     def call(self, content, style, alpha):
