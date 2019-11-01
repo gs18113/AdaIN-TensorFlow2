@@ -39,7 +39,7 @@ tf.random.set_seed(123)
 encoder = tf.keras.applications.VGG19(include_top=False)
 decoder = get_decoder()
 model = Net(encoder, decoder)
-print(model.trainable_parameters())
+print(model.trainable_varaibles)
 
 lr_schedule = tf.keras.optimizers.schedules.InverseTimeDecay(
     args.lr,
