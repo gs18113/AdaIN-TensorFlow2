@@ -4,8 +4,11 @@ def expand_moments_dim(moment):
     return tf.reshape(moment, [-1, 1, 1, tf.shape(moment)[-1]])
 
 def adain(content_feature, style_feature, eps=1e-5):
-    content_mean, content_std = tf.nn.moments(content_feature, axes=[1, 2])
-    style_mean, style_std = tf.nn.moments(style_feature, axes=[1, 2])
+    content_mean, content_var = tf.nn.moments(content_feature, axes=[1, 2])
+    style_mean, style_var = tf.nn.moments(style_feature, axes=[1, 2])
+
+    content_std = tf.sqrt(content_var)
+    style_std = tf.sqrt(style_var)
 
     content_mean = expand_moments_dim(content_mean)
     # TFLite does not support broadcasting; it is allowed for add, mul, sub, div
